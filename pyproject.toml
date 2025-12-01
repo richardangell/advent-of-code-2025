@@ -41,6 +41,11 @@ select = [
     "SIM", # flake8-simplify
 ]
 
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*.py" = [
+    "S101", # Use of assert
+]
+
 [tool.mypy]
 python_version = "3.11"
 exclude = "tests"
