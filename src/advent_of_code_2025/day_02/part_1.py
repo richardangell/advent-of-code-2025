@@ -43,7 +43,7 @@ def find_invalid_ids_in_range(lower: str, upper: str) -> list[str]:
         # value for the repeating digits is "1" followed by
         # n_repeated_digits - 1 "0"s
         n_repeated_digits = int((len(lower) + 1) / 2)
-        start_repeated_digit = 10 ** (n_repeated_digits - 1)
+        start_repeated_digit = int(10 ** (n_repeated_digits - 1))
     else:
         # For even number of digits in the lower limit the starting
         # value for the repeating digits is the first half of the limit
