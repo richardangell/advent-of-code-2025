@@ -1,7 +1,7 @@
 import operator
 
 
-def count_times_pointing_at_zero(input: list[str]) -> int:
+def count_times_ending_at_zero(input: list[str]) -> int:
     """Count number of times dial lands on zero."""
 
     count = 0
