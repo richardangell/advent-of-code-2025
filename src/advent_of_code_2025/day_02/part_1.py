@@ -1,3 +1,5 @@
+from functools import partial
+
 from advent_of_code_2025.helpers import load_input
 
 
@@ -54,12 +56,21 @@ def find_invalid_ids_in_range(lower: str, upper: str) -> list[str]:
     else:
         end_repeated_digit = int(upper[:n_repeated_digits])
 
-    for repeated_digits in range(start_repeated_digit, end_repeated_digit + 1):
-        repeated_digits_string = 2 * str(repeated_digits)
+    def repeated_digits_in_range(digits: int, lower: str, upper: str) -> bool:
+        return int(lower) <= int(digits) <= int(upper)
 
-        if int(lower) <= int(repeated_digits_string) <= int(upper):
-            invalid_ids.append(repeated_digits_string)
+    invalid_ids_in_range = list(
+        filter(
+            partial(repeated_digits_in_range, lower=lower, upper=upper),
+            [
+                2 * str(digits_to_repeat)
+                for digits_to_repeat in range(
+                    start_repeated_digit, end_repeated_digit + 1
+                )
+            ],
+        )
+    )
 
-    print(lower, upper, invalid_ids)
+    invalid_ids.extend(invalid_ids_in_range)
 
     return invalid_ids
