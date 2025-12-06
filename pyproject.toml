@@ -1,0 +1,59 @@
+[project]
+name = "advent-of-code-2025"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Richard Angell", email = "richardangell37@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+advent-of-code-2025 = "advent_of_code_2025:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.0",
+    "pytest>=9.0.1",
+]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "I", # isort
+    "N", # pep8-naming
+    "S", # flake8-bandit
+    "SIM", # flake8-simplify
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*.py" = [
+    "S101", # Use of assert
+]
+
+[tool.mypy]
+python_version = "3.11"
+exclude = "tests"
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+warn_unused_configs = true
+show_error_codes = true
