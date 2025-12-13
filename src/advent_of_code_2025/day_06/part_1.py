@@ -16,7 +16,7 @@ class HomeworkProblem:
     @classmethod
     def from_string_values(cls, *args: str) -> "HomeworkProblem":
         """Read values from tuple of strings."""
-        list_args: list[str] = list(*args)
+        list_args: list[str] = list(args)
         return HomeworkProblem(
             inputs=[int(arg) for arg in list_args[:-1]],
             operator=OPERATOR_MAPPING[list_args[-1]],
@@ -31,13 +31,13 @@ def read_homework_from_columns(input: list[str]) -> list[HomeworkProblem]:
     """Read values down each column into a HomeworkProblem."""
     input_lines_split_by_whitespace = [line.split() for line in input]
 
+    # Transpose to get each column in a list
+    input_by_columns = [
+        list(x) for x in zip(*input_lines_split_by_whitespace, strict=True)
+    ]
+
     homework_problems = [
-        HomeworkProblem.from_string_values(items)  # type: ignore[arg-type]
-        for items in zip(
-            *input_lines_split_by_whitespace[:-1],
-            input_lines_split_by_whitespace[-1],
-            strict=True,
-        )
+        HomeworkProblem.from_string_values(*items) for items in input_by_columns
     ]
 
     return homework_problems

@@ -5,7 +5,7 @@ from advent_of_code_2025.day_06.part_1 import (
     sum_cephalopod_math_homework,
 )
 from advent_of_code_2025.day_06.part_2 import (
-    sum_cephalopod_math_homework_by_columns,
+    read_homework_from_columns_and_within_digit_columns,
 )
 from advent_of_code_2025.helpers import load_input
 
@@ -31,6 +31,8 @@ def test_part_1(input_file: str, expected: int) -> None:
 def test_part_2b(input_file: str, expected: int) -> None:
     input = load_input(input_file, remove_lines_breaks=True)
 
-    actual = sum_cephalopod_math_homework_by_columns(input)
+    homework_problems = read_homework_from_columns_and_within_digit_columns(input)
+
+    actual = sum_cephalopod_math_homework(homework_problems)
 
     assert actual == expected

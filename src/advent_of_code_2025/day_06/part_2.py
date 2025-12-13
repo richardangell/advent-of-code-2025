@@ -1,9 +1,12 @@
-from functools import reduce
 from itertools import groupby
-from operator import add, mul
+
+from .part_1 import HomeworkProblem
 
 
-def sum_cephalopod_math_homework_by_columns(input: list[str]) -> int:
+def read_homework_from_columns_and_within_digit_columns(
+    input: list[str],
+) -> list[HomeworkProblem]:
+    """Read values from digits within each column."""
     operators = input[-1].split()
 
     # Split characters by row
@@ -28,8 +31,13 @@ def sum_cephalopod_math_homework_by_columns(input: list[str]) -> int:
         if key
     ]
 
-    ops = {"*": mul, "+": add}
-    total = 0
-    for operator, current_operands in zip(operators, operands, strict=True):
-        total += reduce(ops[operator], [int(x) for x in current_operands])
-    return total
+    homework_problems = [
+        HomeworkProblem.from_string_values(*values, operator)
+        for values, operator in zip(
+            operands,
+            operators,
+            strict=True,
+        )
+    ]
+
+    return homework_problems
