@@ -1,41 +1,43 @@
-import operator
 from dataclasses import dataclass
 from functools import reduce
+from operator import add, mul
 from typing import Callable
+
+OPERATOR_MAPPING = {"*": mul, "+": add}
 
 
 @dataclass
 class HomeworkProblem:
+    """Homework problem containing operator to apply to values."""
+
     inputs: list[int]
     operator: Callable
 
     @classmethod
-    def from_raw_values(cls, *args: str) -> "HomeworkProblem":
+    def from_string_values(cls, *args: str) -> "HomeworkProblem":
         """Read values from tuple of strings."""
-        list_args: list[str] = list(*args)
-        operator_string = list_args[-1]
-        if operator_string == "+":
-            operator_ = operator.add
-        elif operator_string == "*":
-            operator_ = operator.mul
-        else:
-            raise ValueError(f"Unexpected operator string: {operator_string}")
+        list_args: list[str] = list(args)
         return HomeworkProblem(
-            inputs=[int(arg) for arg in list_args[0:-1]], operator=operator_
+            inputs=[int(arg) for arg in list_args[:-1]],
+            operator=OPERATOR_MAPPING[list_args[-1]],
         )
 
     def calculate(self) -> int:
-        """Calculate the homework problem solution."""
+        """Apply the operator to all the inputs."""
         return reduce(self.operator, self.inputs)
 
 
-def transform_input_from_rows_to_columns(input: list[str]) -> list[HomeworkProblem]:
-    """Convert input to list of column HomeworkProblem objects."""
-    input_lines_split = [[x for x in line.split(" ") if len(x) > 0] for line in input]
+def read_homework_from_columns(input: list[str]) -> list[HomeworkProblem]:
+    """Read values down each column into a HomeworkProblem."""
+    input_lines_split_by_whitespace = [line.split() for line in input]
+
+    # Transpose to get each column in a list
+    input_by_columns = [
+        list(x) for x in zip(*input_lines_split_by_whitespace, strict=True)
+    ]
 
     homework_problems = [
-        HomeworkProblem.from_raw_values(items)  # type: ignore[arg-type]
-        for items in zip(*input_lines_split[0:-1], input_lines_split[-1], strict=True)
+        HomeworkProblem.from_string_values(*items) for items in input_by_columns
     ]
 
     return homework_problems
