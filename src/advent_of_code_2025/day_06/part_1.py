@@ -8,6 +8,8 @@ OPERATOR_MAPPING = {"*": mul, "+": add}
 
 @dataclass
 class HomeworkProblem:
+    """Homework problem containing operator to apply to values."""
+
     inputs: list[int]
     operator: Callable
 
@@ -25,13 +27,17 @@ class HomeworkProblem:
         return reduce(self.operator, self.inputs)
 
 
-def transform_input_from_rows_to_columns(input: list[str]) -> list[HomeworkProblem]:
-    """Convert input to list of column HomeworkProblem objects."""
-    input_lines_split = [[x for x in line.split(" ") if len(x) > 0] for line in input]
+def read_homework_from_columns(input: list[str]) -> list[HomeworkProblem]:
+    """Read values down each column into a HomeworkProblem."""
+    input_lines_split_by_whitespace = [line.split() for line in input]
 
     homework_problems = [
         HomeworkProblem.from_string_values(items)  # type: ignore[arg-type]
-        for items in zip(*input_lines_split[:-1], input_lines_split[-1], strict=True)
+        for items in zip(
+            *input_lines_split_by_whitespace[:-1],
+            input_lines_split_by_whitespace[-1],
+            strict=True,
+        )
     ]
 
     return homework_problems
